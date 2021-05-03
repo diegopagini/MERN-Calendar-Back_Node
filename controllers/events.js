@@ -1,13 +1,14 @@
 /** @format */
+
 const { response } = require('express');
 const Evento = require('../models/Evento');
 
-const getEvento = async (req, res = response) => {
+const getEventos = async (req, res = response) => {
 	const eventos = await Evento.find().populate('user', 'name');
 
 	res.json({
 		ok: true,
-		msg: eventos,
+		eventos,
 	});
 };
 
@@ -16,7 +17,9 @@ const crearEvento = async (req, res = response) => {
 
 	try {
 		evento.user = req.uid;
+
 		const eventoGuardado = await evento.save();
+
 		res.json({
 			ok: true,
 			evento: eventoGuardado,
@@ -28,11 +31,6 @@ const crearEvento = async (req, res = response) => {
 			msg: 'Hable con el administrador',
 		});
 	}
-
-	res.json({
-		ok: true,
-		msg: 'crearEvento',
-	});
 };
 
 const actualizarEvento = async (req, res = response) => {
@@ -45,7 +43,7 @@ const actualizarEvento = async (req, res = response) => {
 		if (!evento) {
 			return res.status(404).json({
 				ok: false,
-				msg: 'Evento no existe por ese ID',
+				msg: 'Evento no existe por ese id',
 			});
 		}
 
@@ -90,7 +88,7 @@ const eliminarEvento = async (req, res = response) => {
 		if (!evento) {
 			return res.status(404).json({
 				ok: false,
-				msg: 'Evento no existe por ese ID',
+				msg: 'Evento no existe por ese id',
 			});
 		}
 
@@ -102,9 +100,8 @@ const eliminarEvento = async (req, res = response) => {
 		}
 
 		await Evento.findByIdAndDelete(eventoId);
-		res.json({
-			ok: true,
-		});
+
+		res.json({ ok: true });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({
@@ -115,7 +112,7 @@ const eliminarEvento = async (req, res = response) => {
 };
 
 module.exports = {
-	getEvento,
+	getEventos,
 	crearEvento,
 	actualizarEvento,
 	eliminarEvento,

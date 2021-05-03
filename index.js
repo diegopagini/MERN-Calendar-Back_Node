@@ -12,9 +12,9 @@ const app = express();
 dbConnection();
 
 // CORS
-app.use(cors);
+app.use(cors());
 
-// Directorio público
+// Directorio Público
 app.use(express.static('public'));
 
 // Lectura y parseo del body
